@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 
 import routes from '../routes';
+import api from '../routes';
 
 function createServer() {
   const app = express()
@@ -11,7 +12,8 @@ function createServer() {
   }))
 
   app.use(express.json());
-  routes(app)
+  //app routes version middleware
+  app.use("/api/v1",api)
   return app
 }
 
