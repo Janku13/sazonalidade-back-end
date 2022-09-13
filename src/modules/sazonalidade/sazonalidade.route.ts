@@ -1,14 +1,16 @@
 import express from 'express'
 import validate from '../../middleware/validateRequest'
 
-import { registerSazonalidade,fetchSazonalidades } from './sazonalidade.controller'
-import { createSazonalidadeSchema } from './sazonalidade.schema'
+import { registerSazonalidade,fetchSazonalidades,getSazonalidade } from './sazonalidade.controller'
+import { createSazonalidadeSchema, updateSazonalidadeParams } from './sazonalidade.schema'
 
 
 const sazonalidadeRouter = express.Router()
 
 sazonalidadeRouter.post("/", validate(createSazonalidadeSchema),registerSazonalidade)
-sazonalidadeRouter.get("/",fetchSazonalidades)
+sazonalidadeRouter.get("/fetch-all-sazonalidades",fetchSazonalidades)
+sazonalidadeRouter.get("/get-sazonalidade/:sazonalidadeId", validate(updateSazonalidadeParams), getSazonalidade)
+
 
 
 export default sazonalidadeRouter
