@@ -12,3 +12,10 @@ export async function findSazonalidade(query:FilterQuery<SazonalidadeDocument>,o
   return SazonalidadeModel.findOne(query, {}, option)
   //segundo arg para rejections
 }
+export async function findAndUpdateSazonalidade(query:FilterQuery<SazonalidadeDocument>,update:UpdateQuery<SazonalidadeDocument>,options:QueryOptions) {
+  return SazonalidadeModel.findOneAndUpdate(query, update, options);
+}
+export async function deleteSazonalidadeService(query:FilterQuery<SazonalidadeDocument>) {
+  return SazonalidadeModel.deleteOne(query)
+
+}

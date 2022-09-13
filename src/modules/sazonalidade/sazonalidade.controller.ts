@@ -1,7 +1,7 @@
 import {Request,Response} from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { CreaSazonalidadeInput, UpdateSazonalidadeParams } from './sazonalidade.schema'
-import { createSazonalidade, finalAllSazonalidade, findSazonalidade } from './sazonalidade.service'
+import { createSazonalidade, deleteSazonalidadeService, finalAllSazonalidade, findAndUpdateSazonalidade, findSazonalidade } from './sazonalidade.service'
 
 export async function registerSazonalidade(req: Request<{}, {}, CreaSazonalidadeInput['body']>, res: Response) {  
   const body = req.body
@@ -40,6 +40,35 @@ export async function getSazonalidade(req: Request<UpdateSazonalidadeParams['par
   }
 }
 
-export async function updateSazonalidade(req: Request<UpdateSazonalidadeParams, {},CreaSazonalidadeInput['body']>, res: Response) {
-  // const { productId } = req.params;
+export async function updateSazonalidade(req: Request<UpdateSazonalidadeParams['params'], {},CreaSazonalidadeInput['body']>, res: Response) {
+  const _id = req.params.sazonalidadeId;
+  const update = req.body
+  try {
+    const sazonalidade = await findSazonalidade({ _id })
+    if (!sazonalidade) {
+      return  res.status(StatusCodes.NOT_FOUND).send("Não encontrado")
+    } else {
+      const updatedProduct = await findAndUpdateSazonalidade({ _id }, update, { new: true })
+      return res.status(StatusCodes.OK).send(updatedProduct)
+    }
+  } catch (e) {
+    return  res.status(StatusCodes.BAD_REQUEST).send("e.message") 
+  }
+  
+}
+
+export async function deleteSazonalidade(req:Request<UpdateSazonalidadeParams['params'], {},{}>, res:Response) {
+  
+  const _id = req.params.sazonalidadeId
+  try {
+    const sazonalidade = await findSazonalidade({ _id })
+    if (!sazonalidade) {
+      return  res.status(StatusCodes.NOT_FOUND).send("Não encontrado")
+    } else {
+      await deleteSazonalidadeService({ _id })
+      return res.sendStatus(StatusCodes.NO_CONTENT)
+    }
+  } catch (e) {
+    return  res.status(StatusCodes.BAD_REQUEST).send("e.message") 
+  }
 }
