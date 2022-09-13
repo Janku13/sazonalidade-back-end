@@ -1,19 +1,19 @@
 import mongoose from 'mongoose'
 
 
+
 export interface SazonalidadeDocument extends mongoose.Document {
-  title: String;
+  data: string;
   description: string;
-  price: number;
-  image: string;
+  published: boolean;
   createAt: Date;
   updateAt: Date;
 }
 
 const sazonalidadeSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
-  password:{type:String,required:true}
+  data: { type: String, required: true },
+  description: { type: String, required: true },
+  published:{type:Boolean,required:true}
 }, {
   timestamps:true
 })
